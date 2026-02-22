@@ -1,4 +1,4 @@
-# TCU Course Scraper
+# AddRan Course Scraper
 
 CLI tool that scrapes [classes.tcu.edu](https://classes.tcu.edu) for semester course offerings. Generates `offerings-{term}.json` files used by the English and DCDA advising wizards.
 
