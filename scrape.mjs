@@ -20,6 +20,7 @@ const { values } = parseArgs({
     'max-level': { type: 'string', short: 'l' },
     'all-sections': { type: 'boolean' },
     csv: { type: 'boolean' },
+    'term-hint': { type: 'string' },
     'dry-run': { type: 'boolean' },
     help: { type: 'boolean', short: 'h' },
   },
@@ -36,6 +37,7 @@ Options:
   -a, --attribute  Class attribute code (e.g. "DCDA")
   -o, --out        Output file path (omit for stdout)
   -l, --max-level  Max course number to include (e.g. "49999" for undergrad only)
+  --term-hint      URL term hint for draft/unreleased semesters (e.g. "26-fall-4267")
   --all-sections   Keep all individual sections (don't collapse multi-section courses)
   --csv            Output CSV instead of JSON
   --dry-run        Print JSON/CSV to stdout, don't write file
@@ -74,7 +76,7 @@ async function main() {
     console.error(`Searching: ${label}...`)
 
     // Fresh GET+POST per query (safest for ViewState)
-    const tokens = await getInitialTokens()
+    const tokens = await getInitialTokens(values['term-hint'])
 
     // Validate term code
     if (!tokens.termOptions.some(o => o.value === term.code)) {
