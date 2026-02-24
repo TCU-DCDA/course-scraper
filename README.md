@@ -81,6 +81,39 @@ lib/
 
 ## Term Code Formula
 
-TCU term codes: `base = (academicYear - 1599)`, digit = `{fall: 1, spring: 3, summer: 5}`.
-Academic year = fall's calendar year (Spring/Summer 2026 → academic year 2025).
-Example: Spring 2026 → academic year 2025 → `(2025 - 1599) = 426` → `4263`. See `lib/term-codes.mjs`.
+TCU term codes: `base = (academicYear - 1599)`, digit = `{fall: 7, spring: 3, summer: 5, wintersession: 1}`.
+Academic year = fall's calendar year (Spring/Summer/Wintersession 2026 → academic year 2025).
+Examples:
+- Spring 2026 → academic year 2025 → `(2025 - 1599) = 426` → `4263`
+- Fall 2025 → academic year 2025 → `(2025 - 1599) = 426` → `4257`
+- Fall 2026 (draft) → use `--term 4267 --term-hint "26-fall-4267"` for unpublished semesters
+
+See `lib/term-codes.mjs`.
+
+## Generating Frequency Data
+
+To build a course frequency JSON from multiple offerings files:
+
+```bash
+node -e "
+const fs = require('fs');
+const files = [
+  { path: '../english-advising-wizard/src/data/offerings-fa25.json', term: 'Fall 2025' },
+  { path: '../english-advising-wizard/src/data/offerings-sp26.json', term: 'Spring 2026' },
+  { path: '../english-advising-wizard/src/data/offerings-fa26.json', term: 'Fall 2026' },
+];
+const terms = [], courses = {};
+for (const { path, term } of files) {
+  const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+  terms.push(term);
+  for (const code of data.offeredCodes) {
+    if (!courses[code]) courses[code] = [];
+    courses[code].push(term);
+  }
+}
+const sorted = Object.fromEntries(Object.entries(courses).sort(([a],[b]) => a.localeCompare(b)));
+fs.writeFileSync('../english-advising-wizard/src/data/course-frequency.json', JSON.stringify({ terms, courses: sorted }, null, 2));
+"
+```
+
+This produces the format expected by the admin Frequency Tracker: `{ terms: string[], courses: Record<string, string[]> }`.
