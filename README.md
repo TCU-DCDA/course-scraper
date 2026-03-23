@@ -1,6 +1,6 @@
 # Course Scraper
 
-CLI tool that scrapes [classes.tcu.edu](https://classes.tcu.edu) for semester course offerings. Generates `offerings-{term}.json` files used by the English and DCDA advising wizards.
+CLI tool that scrapes [classes.tcu.edu](https://classes.tcu.edu) for semester course offerings. Generates `offerings-{term}.json` files used by [Engelina](https://github.com/TCU-DCDA/english-advising-wizard) and [Ada](https://github.com/TCU-DCDA/dcda-advising-wizard), the degree-planning wizards in the [Advising Ecosystem](https://github.com/curtrode/ecosystem-docs).
 
 ## Usage
 
