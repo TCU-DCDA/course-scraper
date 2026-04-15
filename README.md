@@ -29,11 +29,13 @@ node scrape.mjs -t "Spring 2026" -s ENGL,CRWT,WRIT -l 49999 \
   -o ../english-advising-wizard/src/data/offerings-sp26.json
 ```
 
-**DCDA wizard** (all sections, using DCDA attribute filter):
+**DCDA wizard** (all sections, dual query — subject + attribute):
 ```bash
-node scrape.mjs -t "Spring 2026" -a DCDA --all-sections \
+node scrape.mjs -t "Spring 2026" -s DCDA -a DCDA --all-sections \
   -o ../dcda-advising-wizard/data/offerings-sp26.json
 ```
+
+The `-s DCDA` belt-and-suspenders catches DCDA-prefixed courses (e.g. DCDA 40273 Internship, DCDA 30970 Special Topics) that occasionally ship without the DCDA class attribute on upcoming/draft terms. The scraper runs both queries and dedupes by `code|section`, so there's no downside beyond a second HTTP request.
 
 **Dry run with CSV output:**
 ```bash
