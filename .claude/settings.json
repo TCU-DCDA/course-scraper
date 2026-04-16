@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la dcda-fa26-scrape-*.json)",
+      "Bash(wc -c dcda-fa26-scrape-*.json)"
+    ]
+  }
+}
